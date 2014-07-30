@@ -33,6 +33,7 @@ __url__ = "http://www.freecadweb.org"
 
 import os, FreeCAD, FreeCADGui, WorkingPlane, math, re, Draft, Draft_rc, DraftVecUtils
 from FreeCAD import Vector
+FreeCADGui.doCommand("from FreeCAD import Vector")
 from DraftGui import todo,QtCore,QtGui
 from DraftSnap import *
 from DraftTrackers import *
@@ -371,20 +372,20 @@ class SelectPlane(DraftTool):
         except:
             self.offset = 0
         if arg == "XY":
-            plane.alignToPointAndAxis(Vector(0,0,0), Vector(0,0,1), self.offset)
+            FreeCADGui.doCommand("FreeCAD.DraftWorkingPlane.alignToPointAndAxis(Vector(0,0,0),Vector(0,0,1), "+str(self.offset)+")") 
             self.display('top')
             self.finish()
         elif arg == "XZ":
-            plane.alignToPointAndAxis(Vector(0,0,0), Vector(0,-1,0), self.offset)
+            FreeCADGui.doCommand("FreeCAD.DraftWorkingPlane.alignToPointAndAxis(Vector(0,0,0),Vector(0,-1,0), "+str(self.offset)+")")
             self.display('front')
             self.finish()
         elif arg == "YZ":
-            plane.alignToPointAndAxis(Vector(0,0,0), Vector(1,0,0), self.offset)
+            FreeCADGui.doCommand("FreeCAD.DraftWorkingPlane.alignToPointAndAxis(Vector(0,0,0), Vector(1,0,0), "+str(self.offset)+")")
             self.display('side')
             self.finish()
         elif arg == "currentView":
             viewDirection = self.view.getViewDirection().negative()
-            plane.alignToPointAndAxis(Vector(0,0,0), viewDirection, self.offset)
+            FreeCADGui.doCommand("FreeCAD.DraftWorkingPlane.alignToPointAndAxis(Vector(0,0,0)," + str(viewDirection)+", "+str(self.offset)+")")
             self.display(viewDirection)
             self.finish()
         elif arg == "reset":
